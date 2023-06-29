@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Details</title>
+  <style>
+    h1 {
+      text-align: center;
+    }
+
+    form {
+      text-align: center;
+      margin: 20px;
+    }
+
+    input {
+      display: block;
+      margin: 10px auto;
+    }
+
+    button {
+      display: block;
+      margin: 10px auto;
+    }
+
+    #userDetailsContainer {
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>User Details</h1>
+  <form>
+    <input type="text" id="nameInput" placeholder="Enter your name">
+    <input type="email" id="emailInput" placeholder="Enter your email">
+    <button type="button" onclick="saveUserDetails()">Submit</button>
+  </form>
+  <div id="userDetailsContainer"></div>
+
+  <script>
+    function saveUserDetails() {
+      var name = document.getElementById("nameInput").value;
+      var email = document.getElementById("emailInput").value;
+
+      var userDetails = {
+        name: name,
+        email: email
+      };
+
+      var existingUserDetails = JSON.parse(localStorage.getItem("userDetails")) || [];
+      existingUserDetails.push(userDetails);
+      localStorage.setItem("userDetails", JSON.stringify(existingUserDetails));
+
+      document.getElementById("nameInput").value = "";
+      document.getElementById("emailInput").value = "";
+
+      displayUserDetails(existingUserDetails);
+    }
+
+    function displayUserDetails(userDetails) {
+      var userDetailsContainer = document.getElementById("userDetailsContainer");
+      userDetailsContainer.innerHTML = "";
+
+      userDetails.forEach(function(user) {
+        var userDiv = document.createElement("div");
+        userDiv.innerHTML = "<strong>Name:</strong> " + user.name + "<br><strong>Email:</strong> " + user.email;
+        userDetailsContainer.appendChild(userDiv);
+      });
+    }
+
+    var existingUserDetails = JSON.parse(localStorage.getItem("userDetails")) || [];
+    displayUserDetails(existingUserDetails);
+  </script>
+</body>
+</html>
